@@ -1,6 +1,6 @@
 ---
 name: 3d-web-design
-description: Methodology and pattern library for designing and building interactive 3D web experiences with Three.js / React Three Fiber / WebGPU (TSL), GSAP, and scroll-driven storytelling. Use when building or reviewing a 3D website, WebGL/WebGPU scene, scroll-driven or camera-path experience, shader effect, immersive portfolio, product launch page, or when the user mentions Three.js, R3F, drei, GSAP, shaders, instancing, post-processing, or "3D web".
+description: Methodology and pattern library for designing and building interactive 3D web experiences with Three.js / React Three Fiber / WebGPU (TSL), GSAP, scroll-driven storytelling, and production UI/UX quality gates. Use when building or reviewing a 3D website, WebGL/WebGPU scene, scroll-driven or camera-path experience, shader effect, immersive portfolio, product launch page, 3D landing page, or when the user mentions Three.js, R3F, drei, GSAP, shaders, instancing, post-processing, accessibility, responsive interaction, design systems, or "3D web".
 ---
 
 # 3D Web Design & Development
@@ -13,12 +13,14 @@ The detailed, code-level catalog lives in [references/technique-catalog.md](refe
 
 **Screenplay → Mechanics → Dress → Optimize.** Never reorder these.
 
-1. **Screenplay** — Write the film first. What does the user see, where does the camera go, what's the story/message? Decide the emotional beat of each scene before any code.
+1. **Screenplay** — Write the film first. What does the user see, where does the camera go, what's the story/message? Decide the emotional beat of each scene before any code. Define product type, audience, style keywords, density, motion level, primary action, typography/color tokens, and the accessible DOM fallback here.
 2. **Mechanics** — Build movement and flow with plain shapes (planes, cubes, no textures, no shaders). Make it *feel* right when it looks like nothing. Scroll, camera, transitions, room/section logic come first.
 3. **Dress** — Only now add textures, shaders, materials, sound. Visual identity goes on top of working foundations, never the reverse.
 4. **Optimize** — Profile, then apply the performance playbook. Do not pre-optimize; do not ship without this step either.
 
 Corollary: **tech is never the blocker — imagination is.** If you can describe it, it can be coded. Budget stubbornness.
+
+Second corollary: **spectacle never outranks usability.** A 3D site is still a product interface. If it breaks contrast, keyboard access, touch targets, readable type, predictable navigation, or reduced-motion behavior, the scene is unfinished no matter how beautiful the shader is.
 
 ## When to use this skill
 
@@ -28,6 +30,14 @@ Building/reviewing: immersive portfolios, product/launch pages, scroll-driven 3D
 
 ### Should this even be 3D?
 Only if the *space* carries meaning the DOM can't. A walk-through beats a scroll-down only when the environment is part of the story. Otherwise a great standard layout wins on UX. Be honest.
+
+### Design system before visual dressing
+Before choosing shaders or post-processing, establish a compact design contract:
+- **Product fit**: Match style to product type and audience. Portfolio/editorial can be cinematic; SaaS/admin/data products need quieter density, clearer navigation, and faster task completion.
+- **Dials**: Set `variance`, `motion`, and `density` intentionally. High motion is for story moments; high density is for dashboards; high variance needs stronger layout discipline.
+- **Tokens**: Use semantic tokens for color, typography, spacing, radius, elevation, z-index, and motion. Avoid raw one-off hex values inside components.
+- **Interface layer**: Use one icon family/style, no emoji as structural icons, one primary CTA per view, and visible labels for navigation or unfamiliar controls.
+- **Theme parity**: Design light/dark variants together. Test contrast and state visibility separately in each theme.
 
 ### Geometry approach
 | You have | Do this |
@@ -56,6 +66,18 @@ GSAP is the default for choreography. **The master pattern: drive every WebGL ef
 - React + R3F when you need routing, CMS, or component state — but keep **scroll/pointer values in refs/stores, never React state** (see Performance).
 - CMS (Sanity/Dato/Shopify presets) for content-driven sites; adopt early, not as a retrofit.
 
+## 3D UI/UX quality gate
+
+Apply this in Screenplay and again before delivery. Fix failures before adding more visual effects.
+
+1. **Accessibility first**: Text contrast ≥4.5:1, data/large glyph contrast ≥3:1, visible focus rings, logical heading order, skip link, alt text for meaningful media, aria-labels for icon-only controls, and full keyboard navigation for every route/room/action. Never convey state by color alone.
+2. **Touch & gesture safety**: Primary hit areas ≥44×44px with at least 8px spacing. Provide visible controls for critical actions; never rely on hover, drag, or scroll gestures alone. Add press feedback within ~100ms, use drag thresholds, and avoid conflicts with vertical scroll and system back gestures.
+3. **Layout resilience**: Build mobile-first at 375px, tablet, desktop, and landscape. Avoid horizontal scroll, fixed-width containers, disabled zoom, and content hidden behind sticky nav/CTA bars. Prefer `min-height: 100dvh`, safe-area padding, stable aspect ratios, and reserved media dimensions to prevent CLS.
+4. **Typography & color**: Use body text ≥16px on mobile, line-height 1.5-1.75, readable line lengths, semantic color tokens, and tabular figures for metrics/timers. Wrap important text instead of truncating; if truncation is necessary, expose the full value.
+5. **Motion discipline**: UI micro-interactions usually live at 150-300ms; complex route/scene transitions should stay purposeful and interruptible. Animate transform/opacity, not layout properties. Reduced motion is a parallel design: simpler camera paths, fewer splats, no vestibular surprises, same content.
+6. **Forms, feedback, and data**: Use visible labels, inline errors near fields, loading/success/error states, undo for destructive actions, and `aria-live` for toasts/errors. Charts need legends, tooltips reachable by keyboard/tap, accessible colors, and a text/table summary.
+7. **Navigation integrity**: Preserve back behavior, scroll position, active nav state, and deep links for key sections. After route/scene changes, move focus to the main content region. Do not hide core navigation inside a non-obvious 3D interaction.
+
 ## Core pattern quick-reference
 
 Full code for each is in [references/technique-catalog.md](references/technique-catalog.md). The highest-leverage ones:
@@ -79,6 +101,7 @@ Full code for each is in [references/technique-catalog.md](references/technique-
 | Reveal shaders | Brush/block/dissolve via noise + `step`/`smoothstep` | Transitions |
 | Persistent scene + Barba/router | Canvas survives navigation; camera slides | Transitions |
 | DOM↔WebGL bridge | Shared store (Context/Zustand) links canvas & layout | Architecture |
+| 3D UI/UX gate | Product-fit tokens, a11y, touch, responsive, motion QA | This file → quality gate |
 | Staggered instance timeline | One global `uProgress` + per-instance index → N offset sub-animations | Extended index → §D |
 | Physics-driven UI | Objects *are* the interface; AABB + spatial hash in a Worker | Physics & interactive UI |
 | Achievements/onboarding | Teach non-standard UX; persist to localStorage | Accessibility & UX |
@@ -103,16 +126,29 @@ Verify with a real FPS monitor (drei `PerformanceMonitor` can auto-downgrade tie
 
 - **Onboard interaction.** Non-standard UX means users don't know what to do. Use tooltips-as-achievements ("Scroll to fly", "Drag to browse") that complete on the action. Persist to localStorage.
 - **`prefers-reduced-motion` is a parallel design, not a disable flag.** Ship a real degraded version that conveys the same intent without vestibular cost (`gsap.matchMedia`).
-- **Keep an accessible DOM.** The canvas is decorative; provide semantic headings/landmarks + an SEO/screen-reader fallback tree (invisible but crawlable). Add keyboard navigation for camera/room changes.
+- **Keep an accessible DOM.** The canvas is decorative; provide semantic headings/landmarks + an SEO/screen-reader fallback tree (invisible but crawlable). Add keyboard navigation for camera/room changes and preserve focus on route/scene transitions.
+- **Bridge states cleanly.** DOM buttons, nav, forms, captions, charts, and modals must own semantic state (`disabled`, `aria-expanded`, `aria-current`, validation messages). The WebGL scene may mirror that state visually, but it should not be the only source of meaning.
 - **Sound is opt-in.** Never autoplay. But *have* sound — ambient per scene turns "a page with graphics" into "a place". Muffle (lowpass) rather than cut when entering sub-views.
+
+## Pre-delivery checks
+
+- Test at 375px, tablet, desktop, and mobile landscape; confirm no horizontal scroll or clipped fixed UI.
+- Test keyboard-only navigation, visible focus, screen-reader labels for controls, route-change focus, and skip-to-main.
+- Test `prefers-reduced-motion`, low-end mobile tier, slow network, and high text scaling.
+- Verify contrast in light and dark modes, touch targets ≥44×44px, press/loading/error states, and no hover-only paths.
+- Verify CLS-safe media dimensions, font loading, asset compression, shader warm-up strategy, and FPS target on representative hardware.
 
 ## Anti-patterns & hard-won lessons
 
 - Polishing visuals on a broken camera/scroll foundation (violates the one rule).
+- Treating the canvas as the interface and leaving DOM/a11y/SEO as an afterthought.
+- Hiding primary navigation or CTAs behind hover, mystery gestures, or unlabeled icons.
 - Real-time shadows on flat/stylized geometry (huge cost, zero visual gain).
 - Blindly adopting KTX2 — it degraded hand-drawn textures and slowed load in a real case; WebP already hit 60/144fps.
 - Remounting a WebGL context per gallery item → GPU memory climb → stutter. Mount once, swap textures.
 - Driving 60Hz scroll updates through React state.
+- Animating layout properties for UI chrome; use transform/opacity and keep interactions interruptible.
+- Hardcoding per-screen colors/effects instead of using semantic tokens and theme parity.
 - Chasing "correct" optimizations that the current solution already makes unnecessary.
 - Adding effects because you can. Restraint and pacing beat density (Podium, Susurrus). Every technical decision should serve the message.
 
