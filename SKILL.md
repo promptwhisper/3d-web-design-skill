@@ -7,7 +7,7 @@ description: Methodology and pattern library for designing and building interact
 
 A distilled methodology for building 3D web experiences that are cinematic, performant, accessible, and shippable. Synthesized from a dozen award-winning Codrops case studies and the `portfolio-itom` project (hand-drawn infinite-corridor portfolio; GSAP SOTD / FWA of the Day).
 
-The detailed, code-level catalog lives in [references/technique-catalog.md](references/technique-catalog.md). Read it only when implementing or reviewing a specific technique. This file is the decision spine.
+The detailed catalogs live in [references/technique-catalog.md](references/technique-catalog.md) and [references/frontend-taste-and-ux.md](references/frontend-taste-and-ux.md). Read them only when implementing or reviewing a specific technique, UX gate, redesign, or anti-template issue. This file is the decision spine.
 
 ## The one rule that governs everything
 
@@ -214,6 +214,7 @@ Verify with a real FPS monitor (drei `PerformanceMonitor` can auto-downgrade tie
 ## Reference map
 
 - `references/technique-catalog.md` — full technique catalog (§A–§L core patterns, §M physics & interactive UI, §N extended index from a deep-study pass over the whole Three.js tag) with code snippets and source links. Read the relevant section when implementing architecture, scroll/input, cameras, instancing, shaders, post-processing, transitions, assets, performance, sound, content tooling, accessibility, physics-driven UI, or the extended technique index.
+- `references/frontend-taste-and-ux.md` — detailed frontend taste and UX catalog distilled from UI/UX and anti-slop frontend guidance. Read it when the task involves design reads, dial selection, design systems, hero quality, DOM/WebGL UI contracts, accessibility, responsive behavior, motion orchestration, visual assets, content/CTA quality, forms/data feedback, redesigns, or anti-template preflight.
 
 ## Additional resources
 
