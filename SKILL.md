@@ -1,6 +1,6 @@
 ---
 name: 3d-web-design
-description: Methodology and pattern library for designing and building interactive 3D web experiences with Three.js / React Three Fiber / WebGPU (TSL), GSAP, scroll-driven storytelling, and production UI/UX quality gates. Use when building or reviewing a 3D website, WebGL/WebGPU scene, scroll-driven or camera-path experience, shader effect, immersive portfolio, product launch page, 3D landing page, or when the user mentions Three.js, R3F, drei, GSAP, shaders, instancing, post-processing, accessibility, responsive interaction, design systems, or "3D web".
+description: Methodology and pattern library for designing and building interactive 3D web experiences with Three.js / React Three Fiber / WebGPU (TSL), GSAP, scroll-driven storytelling, production UI/UX quality gates, and anti-template taste checks. Use when building or reviewing a 3D website, WebGL/WebGPU scene, scroll-driven or camera-path experience, shader effect, immersive portfolio, product launch page, 3D landing page, redesign, or when the user mentions Three.js, R3F, drei, GSAP, shaders, instancing, post-processing, accessibility, responsive interaction, design systems, visual taste, or "3D web".
 ---
 
 # 3D Web Design & Development
@@ -13,7 +13,7 @@ The detailed, code-level catalog lives in [references/technique-catalog.md](refe
 
 **Screenplay → Mechanics → Dress → Optimize.** Never reorder these.
 
-1. **Screenplay** — Write the film first. What does the user see, where does the camera go, what's the story/message? Decide the emotional beat of each scene before any code. Define product type, audience, style keywords, density, motion level, primary action, typography/color tokens, and the accessible DOM fallback here.
+1. **Screenplay** — Write the film first. What does the user see, where does the camera go, what's the story/message? Decide the emotional beat of each scene before any code. Define page kind, audience, reference signals, style keywords, design variance, motion intensity, visual density, primary action, typography/color tokens, and the accessible DOM fallback here.
 2. **Mechanics** — Build movement and flow with plain shapes (planes, cubes, no textures, no shaders). Make it *feel* right when it looks like nothing. Scroll, camera, transitions, room/section logic come first.
 3. **Dress** — Only now add textures, shaders, materials, sound. Visual identity goes on top of working foundations, never the reverse.
 4. **Optimize** — Profile, then apply the performance playbook. Do not pre-optimize; do not ship without this step either.
@@ -33,11 +33,27 @@ Only if the *space* carries meaning the DOM can't. A walk-through beats a scroll
 
 ### Design system before visual dressing
 Before choosing shaders or post-processing, establish a compact design contract:
+- **Design read**: State one line before building: "Reading this as: [page kind] for [audience], with a [vibe] language, leaning toward [system/aesthetic]." If the read can split in two real directions, ask one clarifying question.
 - **Product fit**: Match style to product type and audience. Portfolio/editorial can be cinematic; SaaS/admin/data products need quieter density, clearer navigation, and faster task completion.
-- **Dials**: Set `variance`, `motion`, and `density` intentionally. High motion is for story moments; high density is for dashboards; high variance needs stronger layout discipline.
+- **Dials**: Set `DESIGN_VARIANCE`, `MOTION_INTENSITY`, and `VISUAL_DENSITY` intentionally. High motion is for story moments; high density is for dashboards; high variance needs stronger layout discipline. Trust-first or regulated work lowers variance and motion.
+- **Real systems**: If the brief clearly maps to a real design system, use the official package and tokens instead of imitating it by hand. Examples: Material, Fluent, Carbon, Polaris, Atlassian, Primer, GOV.UK, USWDS, Radix, shadcn/ui. Use one system per project.
+- **Aesthetic honesty**: Glass, bento, brutalism, editorial, dark-tech, kinetic type, and "Liquid Glass" on the web are aesthetic implementations, not official systems. Label platform-specific approximations honestly and provide solid fallbacks for blur/transparency.
 - **Tokens**: Use semantic tokens for color, typography, spacing, radius, elevation, z-index, and motion. Avoid raw one-off hex values inside components.
 - **Interface layer**: Use one icon family/style, no emoji as structural icons, one primary CTA per view, and visible labels for navigation or unfamiliar controls.
 - **Theme parity**: Design light/dark variants together. Test contrast and state visibility separately in each theme.
+
+### Taste dials
+Infer these from the brief, then let them control layout, motion, and density:
+
+| Signal | DESIGN_VARIANCE | MOTION_INTENSITY | VISUAL_DENSITY |
+|---|---:|---:|---:|
+| Minimal, calm, Linear-style, editorial | 5-6 | 3-4 | 2-3 |
+| Premium consumer, Apple-like, luxury, brand | 7-8 | 5-7 | 3-4 |
+| Playful, Awwwards, experimental, agency | 9-10 | 8-10 | 3-4 |
+| Mainstream landing or portfolio | 7-9 | 6-8 | 3-5 |
+| Trust-first, public-sector, regulated, accessibility-critical | 3-4 | 2-3 | 4-5 |
+| Redesign preserve | match existing | existing + 1 | match existing |
+| Redesign overhaul | existing + 2 | existing + 2 | match existing |
 
 ### Geometry approach
 | You have | Do this |
@@ -78,6 +94,30 @@ Apply this in Screenplay and again before delivery. Fix failures before adding m
 6. **Forms, feedback, and data**: Use visible labels, inline errors near fields, loading/success/error states, undo for destructive actions, and `aria-live` for toasts/errors. Charts need legends, tooltips reachable by keyboard/tap, accessible colors, and a text/table summary.
 7. **Navigation integrity**: Preserve back behavior, scroll position, active nav state, and deep links for key sections. After route/scene changes, move focus to the main content region. Do not hide core navigation inside a non-obvious 3D interaction.
 
+## Anti-template taste gate
+
+Use these as anti-slop checks for landing pages, portfolios, product launches, and 3D redesigns:
+
+1. **Hero discipline**: Hero must fit the initial viewport. Desktop headline usually ≤2 lines; subtext ≤20 words; CTA visible without scrolling; top padding capped around 6rem. Put logo walls and trust strips below the hero, not inside it.
+2. **Composition variety**: Avoid centered hero + three equal cards + repeated split sections. Use asymmetric splits, media-mask heroes, scroll-pinned moments, bento with real rhythm, masonry, horizontal pan, or full-width editorial sections when the brief supports them.
+3. **No generic decoration**: Avoid AI-purple glows, random mesh gradients, decorative status dots, scroll cues, section-number eyebrows, version labels, weather/location strips, fake build metadata, and text strips that only exist to look designed.
+4. **Color, type, and shape locks**: Use one accent, one neutral family, one corner-radius system, one icon family, and one copy register per page. Do not default to Inter, beige+brass premium palettes, or mixed serif/sans emphasis unless the brand genuinely calls for it.
+5. **Asset reality**: A 3D/landing page needs real visuals: generated imagery, brand/product media, real screenshots, rendered 3D assets, or a live component preview. Do not ship pure text, div-based fake screenshots, placeholder dashboards, or hand-rolled decorative SVG scenes as the main visual.
+6. **CTA and copy audit**: One label per CTA intent, no duplicate "contact/signup/view work" variants. Buttons must not wrap on desktop. Re-read every visible string and replace cute-but-wrong, fake-poetic, or filler copy with concrete language.
+7. **Content density**: Short section headlines, short supporting copy, and one job per section. Long lists, specs, testimonials, and logo walls need appropriate components, not endless rows with hairlines.
+8. **Motion taste**: If `MOTION_INTENSITY > 4`, show real motion; if you cannot make it robust, lower the dial. Every animation must communicate hierarchy, story, feedback, or state. Use at most one marquee-like device per page.
+9. **Page theme lock**: Pick light, dark, or system theme for the page. Avoid random section-level theme flips unless the brief explicitly asks for a color-block story and the transition is a deliberate event.
+
+## Redesign protocol
+
+When improving an existing 3D site, first classify the job:
+
+- **Preserve**: modernize without breaking brand memory. Audit existing brand tokens, IA, URLs, anchors, nav labels, copy voice, analytics hooks, accessibility wins, SEO pages, and signature interactions before changing visuals.
+- **Overhaul**: new visual language, but preserve content and IA unless asked otherwise. Treat the art direction as greenfield while guarding SEO, routes, legal text, forms, and tracking.
+- **Greenfield**: no existing site or full reset approved. Use the design read and dials as the source of truth.
+
+Modernize in this order: typography, spacing/rhythm, color recalibration, motion layer, hero/key-section recomposition, then full block replacement only when a block is unsalvageable. Never silently change URL structure, primary nav labels, form fields/order, logo/wordmark, legal copy, or consent flows.
+
 ## Core pattern quick-reference
 
 Full code for each is in [references/technique-catalog.md](references/technique-catalog.md). The highest-leverage ones:
@@ -102,9 +142,20 @@ Full code for each is in [references/technique-catalog.md](references/technique-
 | Persistent scene + Barba/router | Canvas survives navigation; camera slides | Transitions |
 | DOM↔WebGL bridge | Shared store (Context/Zustand) links canvas & layout | Architecture |
 | 3D UI/UX gate | Product-fit tokens, a11y, touch, responsive, motion QA | This file → quality gate |
+| Anti-template gate | Brief read, dials, hero discipline, no AI tells | This file → taste gate |
+| Redesign protocol | Preserve IA/SEO/brand before visual overhaul | This file → redesign |
 | Staggered instance timeline | One global `uProgress` + per-instance index → N offset sub-animations | Extended index → §D |
 | Physics-driven UI | Objects *are* the interface; AABB + spatial hash in a Worker | Physics & interactive UI |
 | Achievements/onboarding | Teach non-standard UX; persist to localStorage | Accessibility & UX |
+
+## 3D pattern vocabulary
+
+Use these names to think and communicate before implementing. Choose only patterns that serve the design read:
+- **Hero**: asymmetric split hero, editorial manifesto hero, video/media mask hero, kinetic-type hero, curtain reveal hero, scroll-pinned hero.
+- **Navigation/UI**: magnetic button, dynamic-island status pill, contextual radial menu, mega-menu reveal, morphing modal, spotlight border card.
+- **Layout**: bento grid, masonry layout, split-screen scroll, sticky-stack sections, horizontal scroll hijack, drag-to-pan grid.
+- **Media/3D**: dome gallery, coverflow carousel, shader reveal, text mask over video/scene, hover image trail, holographic/foil material.
+- **Animation choice**: use Motion for ordinary UI/state motion, GSAP ScrollTrigger for pin/scrub scrolltelling, and Three.js/WebGL for true scene work. Isolate each in leaf components and avoid multiple libraries fighting over the same element.
 
 ## Performance playbook (apply in Optimize phase)
 
@@ -132,23 +183,31 @@ Verify with a real FPS monitor (drei `PerformanceMonitor` can auto-downgrade tie
 
 ## Pre-delivery checks
 
+- Declare the design read and dial values; for redesigns, confirm preserve/overhaul/greenfield mode.
+- Confirm the hero fits the first viewport, nav is one line on desktop, CTAs do not wrap, and trust/logo content sits below the hero.
+- Count obvious template tells: repeated eyebrows, repeated split sections, three equal feature cards, duplicate CTA intent, fake product previews, scroll cues, decorative status dots, fake version labels, and generic filler names/copy.
 - Test at 375px, tablet, desktop, and mobile landscape; confirm no horizontal scroll or clipped fixed UI.
 - Test keyboard-only navigation, visible focus, screen-reader labels for controls, route-change focus, and skip-to-main.
 - Test `prefers-reduced-motion`, low-end mobile tier, slow network, and high text scaling.
 - Verify contrast in light and dark modes, touch targets ≥44×44px, press/loading/error states, and no hover-only paths.
 - Verify CLS-safe media dimensions, font loading, asset compression, shader warm-up strategy, and FPS target on representative hardware.
+- Verify real visual assets are present and appropriate: generated/real media, rendered 3D, real screenshots, or live component previews.
 
 ## Anti-patterns & hard-won lessons
 
 - Polishing visuals on a broken camera/scroll foundation (violates the one rule).
 - Treating the canvas as the interface and leaving DOM/a11y/SEO as an afterthought.
 - Hiding primary navigation or CTAs behind hover, mystery gestures, or unlabeled icons.
+- Jumping to centered hero, AI-purple glow, three equal cards, glass everywhere, Inter everywhere, or fake dashboard divs before reading the brief.
+- Using a real design system's visual language while ignoring its official package, tokens, and interaction semantics.
+- Redesigning by changing IA, routes, copy voice, logo, form fields, legal text, analytics hooks, or SEO-critical structure without explicit approval.
 - Real-time shadows on flat/stylized geometry (huge cost, zero visual gain).
 - Blindly adopting KTX2 — it degraded hand-drawn textures and slowed load in a real case; WebP already hit 60/144fps.
 - Remounting a WebGL context per gallery item → GPU memory climb → stutter. Mount once, swap textures.
 - Driving 60Hz scroll updates through React state.
 - Animating layout properties for UI chrome; use transform/opacity and keep interactions interruptible.
 - Hardcoding per-screen colors/effects instead of using semantic tokens and theme parity.
+- Shipping copy that sounds clever but unclear; concrete language beats fake-poetic microcopy.
 - Chasing "correct" optimizations that the current solution already makes unnecessary.
 - Adding effects because you can. Restraint and pacing beat density (Podium, Susurrus). Every technical decision should serve the message.
 

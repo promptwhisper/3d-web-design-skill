@@ -1,4 +1,4 @@
 interface:
   display_name: "3D Web Design"
-  short_description: "Cinematic 3D web with production UX gates"
-  default_prompt: "Use $3d-web-design to plan a cinematic, performant, accessible Three.js/R3F web experience."
+  short_description: "Cinematic 3D web with UX and taste gates"
+  default_prompt: "Use $3d-web-design to plan a cinematic, performant, accessible, non-templated Three.js/R3F web experience."
