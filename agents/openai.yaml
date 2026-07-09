@@ -1,0 +1,4 @@
+interface:
+  display_name: "3D Web Design"
+  short_description: "Plan, build, and review immersive 3D web work"
+  default_prompt: "Use $3d-web-design to plan a cinematic, performant Three.js/R3F web experience."
