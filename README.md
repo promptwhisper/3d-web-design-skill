@@ -1,82 +1,88 @@
+<p align="center">
+  <img src="./assets/readme/hero.svg" width="100%" alt="3D Web Design Skill turns a cinematic idea into a production-ready 3D web experience through four deliberate stages">
+</p>
+
 # 3D Web Design Skill
 
-Codex skill for planning, building, and reviewing cinematic 3D web experiences without losing production UX quality.
+A Codex skill for planning, building, and reviewing immersive web experiences without letting spectacle outrank usability.
 
-It combines:
+It combines Three.js, React Three Fiber, WebGPU, shaders, GSAP choreography, accessibility, responsive behavior, and performance work into one decision-first method.
 
-- Three.js / React Three Fiber / WebGPU / GSAP technique patterns
-- Scroll-driven storytelling and camera choreography
-- DOM and WebGL state-bridging rules
-- Accessibility, responsive, and performance quality gates
-- Anti-template taste checks for landing pages, portfolios, launches, and redesigns
+## Start here
 
-## Install
-
-Clone this repo into the Codex skills folder using the skill name as the directory name:
+Clone the repository into the Codex skills folder:
 
 ```bash
 mkdir -p ~/.codex/skills
-git clone git@github.com:promptwhisper/3d-web-design-skill.git ~/.codex/skills/3d-web-design
+git clone git@github.com:promptwhisper/3d-web-design-skill.git \
+  ~/.codex/skills/3d-web-design
 ```
 
-If you already installed it:
+Restart Codex, then invoke the skill:
+
+```text
+Use $3d-web-design to turn this product story into an accessible,
+responsive Three.js launch page. Start with the screenplay and mechanics.
+```
+
+Already installed?
 
 ```bash
 git -C ~/.codex/skills/3d-web-design pull
 ```
 
-Restart Codex after installing or updating.
-
-## When To Use
-
-Use `$3d-web-design` for:
-
-- 3D landing pages
-- Immersive portfolios
-- WebGL/WebGPU scenes
-- Three.js / R3F / drei projects
-- GSAP scrolltelling
-- Shader effects
-- Camera-path galleries
-- Product launch pages with 3D visuals
-- Redesigns that need stronger visual taste and UX discipline
-- Reviews of 3D web performance, accessibility, interaction, or visual quality
-
-Do not force this skill onto a plain marketing site where 3D does not carry meaning. A standard layout is better when the space is not part of the story.
-
-## Core Method
-
-The governing workflow is:
+## The method
 
 ```text
-Screenplay -> Mechanics -> Dress -> Optimize
+SCREENPLAY  →  MECHANICS  →  DRESS  →  OPTIMIZE
+story          movement       identity    frame budget
 ```
 
-- **Screenplay**: Define story, page kind, audience, style direction, dials, CTA, accessibility fallback, and what the user sees.
-- **Mechanics**: Build scroll, camera, state, route, input, and layout behavior with simple geometry first.
-- **Dress**: Add materials, shaders, textures, sound, post-processing, and final art direction.
-- **Optimize**: Profile and tier by device. Keep WebGL, React, and DOM work inside frame budget.
+| Stage | The decision it answers | Typical output |
+| --- | --- | --- |
+| **Screenplay** | What should the visitor see, feel, and do? | Story beats, page kind, visual direction, CTA, accessible DOM fallback |
+| **Mechanics** | Does the experience work before it looks expensive? | Camera, scroll, routes, input, state, plain geometry |
+| **Dress** | Which materials make the story legible? | Textures, shaders, lighting, sound, post-processing |
+| **Optimize** | Does it remain usable on real devices? | Profiling, device tiers, reduced motion, asset and render budgets |
 
-Second rule: spectacle never outranks usability. If a scene breaks contrast, keyboard access, touch targets, readable type, predictable navigation, or reduced motion, it is not finished.
+The order is the point. A beautiful shader cannot rescue a scene whose camera, interaction, or information hierarchy never worked.
 
-## Design Dials
+## What it helps you build
 
-The skill uses three dials to guide design decisions:
+- immersive portfolios and product launches;
+- scroll-driven camera paths and spatial storytelling;
+- WebGL/WebGPU scenes with Three.js, R3F, drei, or TSL;
+- shader reveals, instanced fields, scene transitions, and physics interfaces;
+- production-minded redesigns that preserve routes, SEO, forms, and brand memory;
+- reviews focused on performance, accessibility, interaction, or visual taste.
+
+Use it selectively. If space does not carry meaning, a strong standard layout is usually the better interface.
+
+## Three design dials
+
+The skill freezes three values before implementation so visual decisions do not drift:
 
 | Dial | Low | High |
-|---|---|---|
-| `DESIGN_VARIANCE` | Symmetric, restrained, predictable | Asymmetric, editorial, experimental |
-| `MOTION_INTENSITY` | Static, micro-interactions only | Pinned scroll, camera paths, kinetic scenes |
-| `VISUAL_DENSITY` | Airy, gallery-like | Dense, operational, dashboard-like |
+| --- | --- | --- |
+| `DESIGN_VARIANCE` | restrained and predictable | asymmetric and experimental |
+| `MOTION_INTENSITY` | static with micro-interactions | camera paths and pinned scrolltelling |
+| `VISUAL_DENSITY` | sparse and gallery-like | compact and operational |
 
-Typical examples:
+These dials change the composition, motion, and information density together. They are not style labels pasted on after the build.
 
-- Minimal / Linear-style: `5-6 / 3-4 / 2-3`
-- Premium consumer: `7-8 / 5-7 / 3-4`
-- Awwwards / experimental: `9-10 / 8-10 / 3-4`
-- Trust-first / regulated: `3-4 / 2-3 / 4-5`
+## Production quality gates
 
-## Files
+A scene is not finished until the product layer works:
+
+- semantic DOM and keyboard access remain available beside the canvas;
+- touch targets, gestures, focus states, and back behavior are predictable;
+- mobile receives an intentional experience rather than a shrunken desktop scene;
+- `prefers-reduced-motion` preserves the content and task;
+- text contrast, line length, and navigation stay readable;
+- shaders, textures, draw calls, DPR, and post-processing fit a measured frame budget;
+- visual assets are real project material, not generic “3D-looking” decoration.
+
+## Reference map
 
 ```text
 3d-web-design/
@@ -88,71 +94,15 @@ Typical examples:
     └── frontend-taste-and-ux.md
 ```
 
-### `SKILL.md`
+- [`SKILL.md`](SKILL.md) is the compact decision spine loaded at runtime.
+- [`technique-catalog.md`](references/technique-catalog.md) contains implementation patterns for cameras, input, state, shaders, instancing, transitions, assets, performance, sound, physics, and architecture.
+- [`frontend-taste-and-ux.md`](references/frontend-taste-and-ux.md) contains the visual, responsive, accessibility, redesign, and anti-template quality gates.
 
-Main decision spine. It stays concise so Codex can load it quickly when the skill triggers.
+## Development
 
-### `references/technique-catalog.md`
+Keep the runtime skill concise and progressively disclosed. Put durable details in `references/`; add scripts only when a repeated, fragile operation needs deterministic automation.
 
-Code-level patterns for 3D web work:
-
-- Architecture and state
-- Input and scroll
-- Camera systems
-- Instancing and GPU-driven rendering
-- Shaders and materials
-- Post-processing
-- Transitions and reveals
-- Textures and assets
-- Performance and tiering
-- Sound
-- Accessibility
-- Physics and interactive UI
-
-### `references/frontend-taste-and-ux.md`
-
-Detailed frontend taste and UX guide:
-
-- Design read and dials
-- Design-system selection
-- Product-fit presets
-- 3D page structure patterns
-- Hero and first viewport discipline
-- DOM/WebGL interface contract
-- Accessibility and interaction gates
-- Responsive/layout mechanics
-- Typography, color, and materiality
-- Motion orchestration
-- Visual assets and media
-- Content, CTA, and social proof rules
-- Forms, feedback, charts, and data
-- Redesign protocol
-- Anti-template preflight
-- Implementation guardrails
-
-## What This Skill Tries To Prevent
-
-- Centered hero over a generic dark mesh
-- AI-purple glow as the default art direction
-- Three equal feature cards
-- Pure-text "minimalism" with no real visuals
-- Div-based fake screenshots
-- 3D scenes that hide core navigation
-- Canvas-only text with no semantic DOM
-- Scroll hijacks with no reduced-motion path
-- Repeated section eyebrows and decorative labels
-- Redesigns that silently break routes, SEO, analytics, forms, or brand memory
-
-## Development Notes
-
-The runtime skill should remain small and progressively disclosed:
-
-- Keep `SKILL.md` as the short decision spine.
-- Put reusable detailed guidance in `references/`.
-- Avoid adding scripts unless a repeated fragile operation needs deterministic execution.
-- Keep README as repository documentation; it is not required for Codex runtime discovery.
-
-Validate frontmatter after edits:
+Validate the skill frontmatter after editing:
 
 ```bash
 ruby -ryaml -e '
@@ -166,16 +116,12 @@ puts "Skill frontmatter looks valid"
 '
 ```
 
-## Updating
-
-After changing the local installed skill, sync the repo copy and push:
+When syncing an installed copy back into this repository, inspect the diff before committing:
 
 ```bash
 cp ~/.codex/skills/3d-web-design/SKILL.md ./SKILL.md
 cp ~/.codex/skills/3d-web-design/agents/openai.yaml ./agents/openai.yaml
 cp ~/.codex/skills/3d-web-design/references/*.md ./references/
+git diff --check
 git status
-git add SKILL.md agents/openai.yaml references README.md
-git commit -m "Update 3D web design skill"
-git push
 ```
