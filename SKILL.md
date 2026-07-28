@@ -1,35 +1,67 @@
 ---
 name: 3d-web-design
-description: Methodology and pattern library for designing and building interactive 3D web experiences with Three.js / React Three Fiber / WebGPU (TSL), GSAP, scroll-driven storytelling, production UI/UX quality gates, and anti-template taste checks. Use when building or reviewing a 3D website, WebGL/WebGPU scene, scroll-driven or camera-path experience, shader effect, immersive portfolio, product launch page, 3D landing page, redesign, or when the user mentions Three.js, R3F, drei, GSAP, shaders, instancing, post-processing, accessibility, responsive interaction, design systems, visual taste, or "3D web".
+description: Design, build, audit, and refactor production 3D web experiences with Three.js, React Three Fiber, WebGPU/TSL, GSAP, physics, and glTF asset pipelines. Use for 3D websites, landing pages, portfolios, product stories, configurators, data-driven scenes, virtual galleries, WebXR, browser games or game-like interactions; adapting or reviewing open-source Three.js projects; diagnosing model loading, materials, routing, input, physics, performance, accessibility, or responsive failures; and requests mentioning Three.js, R3F, drei, WebGL, WebGPU, shaders, instancing, post-processing, Draco, KTX2, Meshopt, Rapier, Cannon, GLB/glTF, or "3D web".
 ---
 
 # 3D Web Design & Development
 
-A distilled methodology for building 3D web experiences that are cinematic, performant, accessible, and shippable. Synthesized from a dozen award-winning Codrops case studies and the `portfolio-itom` project (hand-drawn infinite-corridor portfolio; GSAP SOTD / FWA of the Day).
+A decision system for producing 3D websites, spatial tools, and browser experiences that are expressive, usable, performant, legally reusable, and shippable. It combines Codrops production studies with working open-source Three.js/R3F sites, tools, and games.
 
-The detailed catalogs live in [references/technique-catalog.md](references/technique-catalog.md) and [references/frontend-taste-and-ux.md](references/frontend-taste-and-ux.md). Read them only when implementing or reviewing a specific technique, UX gate, redesign, or anti-template issue. This file is the decision spine.
+Keep this file as the decision spine. Load only the relevant reference from the [reference map](#reference-map); do not load every catalog for a narrow task.
 
-## The one rule that governs everything
+## Classify the experience first
 
-**Screenplay → Mechanics → Dress → Optimize.** Never reorder these.
+Choose the system of record before choosing a renderer or effect:
 
-1. **Screenplay** — Write the film first. What does the user see, where does the camera go, what's the story/message? Decide the emotional beat of each scene before any code. Define page kind, audience, reference signals, style keywords, design variance, motion intensity, visual density, primary action, typography/color tokens, and the accessible DOM fallback here.
-2. **Mechanics** — Build movement and flow with plain shapes (planes, cubes, no textures, no shaders). Make it *feel* right when it looks like nothing. Scroll, camera, transitions, room/section logic come first.
-3. **Dress** — Only now add textures, shaders, materials, sound. Visual identity goes on top of working foundations, never the reverse.
-4. **Optimize** — Profile, then apply the performance playbook. Do not pre-optimize; do not ship without this step either.
+| Experience | System of record | Three.js role | Read next |
+|---|---|---|---|
+| Content/brand/commerce website | Semantic DOM, router, CMS | Atmosphere, continuity, product or media enhancement | `frontend-taste-and-ux.md` + website sections of `experience-architecture.md` |
+| Configurator, editor, map, data tool | Domain store and command history | Spatial view and direct manipulation | tool sections of `experience-architecture.md` |
+| Browser game or game-like experience | Deterministic simulation and game state | Render/sound/input presentation | game sections of `experience-architecture.md` |
+| Visual experiment or shader study | Scene parameters and render graph | The experiment itself | relevant section of `technique-catalog.md` |
 
-Corollary: **tech is never the blocker — imagination is.** If you can describe it, it can be coded. Budget stubbornness.
+Never let two layers compete as the source of truth. DOM text must not drift from Canvas text; physics bodies must not fight mesh transforms; game rules must not be inferred from rendered positions when a grid or state model exists.
 
-Second corollary: **spectacle never outranks usability.** A 3D site is still a product interface. If it breaks contrast, keyboard access, touch targets, readable type, predictable navigation, or reduced-motion behavior, the scene is unfinished no matter how beautiful the shader is.
+Before implementation, state this compact contract:
 
-## When to use this skill
+```text
+Kind / audience / primary task:
+System of record:
+3D semantic role:
+DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY:
+Desktop / mobile / keyboard / reduced-motion / no-WebGL paths:
+Frame, transfer, memory, and Core Web Vitals budgets:
+Source and asset-license constraints:
+Acceptance evidence:
+```
 
-Building/reviewing: immersive portfolios, product/launch pages, scroll-driven 3D worlds, WebGL/WebGPU scenes, shader effects, camera-path galleries, 3D page transitions. For a plain marketing site with a hero animation, most of this is overkill — use only the input/perf sections.
+## The governing workflow
+
+Use two gates around the original method: **Classify → Screenplay → Mechanics → Dress → Optimize → Prove.** Do not skip or reorder the middle four phases.
+
+1. **Classify** — Select the experience type and system of record. Inspect the existing project, dependencies, routes, licenses, assets, and constraints before proposing a stack.
+2. **Screenplay** — Define what the user sees, understands, and can do at each beat. Set the design read, dials, primary action, content hierarchy, fallback paths, and measurable budgets.
+3. **Mechanics** — Implement DOM/routes or simulation state first, then input, camera, transitions, collisions, scene lifecycle, and loading with plain geometry.
+4. **Dress** — Add final assets, materials, shaders, post-processing, typography, sound, and art direction only after the mechanics survive interruption and resize.
+5. **Optimize** — Profile network, main thread, GPU, and memory; then tier assets, DPR, instances, passes, and update frequency. Optimize measured bottlenecks.
+6. **Prove** — Exercise the real task on desktop, touch, keyboard, reduced motion, slow network, and low tier. Capture build/test/audit output and visual evidence; do not call a scene finished because it merely renders once.
+
+**Spectacle never outranks usability or rules.** A website must preserve content, navigation, conversion, accessibility, and real URLs. A game must preserve readable rules, feedback, restart/recovery, and deterministic-enough state. A tool must preserve data integrity, undo/recovery, and export/persistence.
 
 ## Decision guides
 
 ### Should this even be 3D?
 Only if the *space* carries meaning the DOM can't. A walk-through beats a scroll-down only when the environment is part of the story. Otherwise a great standard layout wins on UX. Be honest.
+
+### Open-source adaptation gate
+
+When a public repository, Codrops demo, or GitHub project is used as a reference, read [references/open-source-casebook.md](references/open-source-casebook.md) before copying anything.
+
+1. Inspect the exact revision's `LICENSE`, `README`, `package.json`, `.env.example`, and asset-specific license/credit files.
+2. Classify it as **standard open source**, **open-source code with separately restricted assets/content**, or **source-visible but restricted/unlicensed**. Public GitHub access is not a license.
+3. Extract mechanisms—renderer ownership, routing bridge, quality tier, input model, simulation loop—not the author's brand, copy, models, textures, music, or portfolio content.
+4. Record source URL, author, license, revision, files reused, and modifications. Resolve contradictory license text in writing before commercial use.
+5. Verify current framework and dependency APIs against official docs; old projects are architecture references, not dependency templates.
 
 ### Design system before visual dressing
 Before choosing shaders or post-processing, establish a compact design contract:
@@ -62,6 +94,38 @@ Infer these from the brief, then let them control layout, motion, and density:
 | Blender skills | Model low-poly, bake lighting, DRACO-compress GLTF, `.psd`-live-texture workflow. |
 | A camera move / spatial feel | Author a **curve in Blender**, export points to JSON, rebuild as `CatmullRomCurve3`, drive by scroll. |
 | Millions of elements | GPU-driven: instancing + compute + indirect draw (WebGPU). |
+
+### Simulation and collision approach
+
+For games and game-like interfaces, choose the cheapest model that preserves the rule:
+
+| Rule | Prefer |
+|---|---|
+| Discrete placement, board, voxel, deterministic puzzle | Integer grid/occupancy; render it with Three.js |
+| Pickups, simple enemies, arcade projectiles | Handwritten `dt` motion + squared distance/AABB/ray tests |
+| Balls, stacks, contact, friction, constraints | Rapier/Cannon with a fixed or semi-fixed step |
+| Third-person traversal | Capsule, ground probe, explicit locomotion state machine, camera rig |
+| Endless runner/flight or authored tunnel | Keep the player locally stable; move a curve/world parameter |
+| Many transient entities | Object pool + lightweight rule data + dirty render synchronization |
+
+Do not add a physics engine to decide rules that a grid or interval can decide exactly. Keep input actions, simulation, collision/rules, entity lifecycle, render synchronization, HUD, and audio as separate systems. Read [references/experience-architecture.md](references/experience-architecture.md) before implementing a game, configurator, or state-heavy 3D app.
+
+### Production 3D assets
+
+For external models, textures, HDRIs, public assets, asset replacement, or load/material failures, read [references/3d-asset-pipeline.md](references/3d-asset-pipeline.md) before integration.
+
+The required chain is **brief → source → inspect → audition → prepare → integrate → validate**:
+
+1. Brief semantic role, camera distance, art direction, animation needs, platform budget, and license constraints.
+2. Prefer official/original sources; download locally and record author, license, source URL, modifications, and usage.
+3. Audit `.glb/.gltf` before writing loader code:
+   ```bash
+   node "${CODEX_HOME:-$HOME/.codex}/skills/3d-web-design/scripts/audit-gltf.mjs" public/models/example.glb
+   ```
+4. Treat glTF extensions as runtime contracts. Configure Draco, Meshopt, KTX2, and WebP support before the first load when the audit requires them.
+5. Audition candidates in the real camera, lighting, tone mapping, viewport, and DOM composition. Reject low-detail silhouettes, broken materials, giant hidden geometry, and thematically unrelated asset mixtures.
+6. Preserve PBR intent. Never force all materials to share minimum metalness or one roughness response; fix color space, lighting, exposure, and environment reflections before repainting textures.
+7. A fallback primitive is an error state, not a shippable hero asset. Verify console/network state, desktop/mobile screenshots, closest-camera detail, memory, scene switching, and the designed failure path.
 
 ### Responsive strategy: scale down vs. two experiences
 Two valid approaches — pick per project:
@@ -147,6 +211,7 @@ Full code for each is in [references/technique-catalog.md](references/technique-
 | Staggered instance timeline | One global `uProgress` + per-instance index → N offset sub-animations | Extended index → §D |
 | Physics-driven UI | Objects *are* the interface; AABB + spatial hash in a Worker | Physics & interactive UI |
 | Achievements/onboarding | Teach non-standard UX; persist to localStorage | Accessibility & UX |
+| Asset intake audit | Inspect glTF extensions, dependencies, complexity, and external files before loading | Asset pipeline reference + `audit-gltf.mjs` |
 
 ## 3D pattern vocabulary
 
@@ -160,7 +225,7 @@ Use these names to think and communicate before implementing. Choose only patter
 ## Performance playbook (apply in Optimize phase)
 
 Run in this order; stop when frame budget is met:
-1. **Keep high-frequency values out of React.** Scroll/pointer → refs/Zustand, write `element.style.*` / uniforms directly in the loop. A render-tree reconcile is ~8ms you don't have at 120Hz.
+1. **Keep high-frequency values out of React.** Scroll/pointer → refs/Zustand, write `element.style.*` / uniforms directly in the loop. Avoid spending the frame budget on component reconciliation for values that never need DOM rerenders.
 2. **Mount only what's near the viewport.** Active section + immediate neighbors; unmount+dispose the rest.
 3. **Cull aggressively.** Hide off-camera groups (`group.visible = false`); frustum-cull; GPU indirect-draw culling for instanced fields.
 4. **Instance repeated geometry.** N objects → 1 draw call.
@@ -171,19 +236,24 @@ Run in this order; stop when frame budget is met:
 9. **Device tiers, not one universal scene.** Mobile: cap by memory pressure, smaller assets, fewer/no post passes. **Blur is usually the single most expensive mobile effect — cut it first.** Set context `powerPreference:'low-power'` on phones.
 10. **Reuse allocations.** Bind callbacks once; `vec.set()` not `new Vec()`; `quickTo` not new tweens per frame.
 
-Verify with a real FPS monitor (drei `PerformanceMonitor` can auto-downgrade tier on decline). Target: 60 on phones, 120+ on desktop; degrade gracefully, never break.
+Verify with frame-time traces and real devices (drei `PerformanceMonitor` can auto-downgrade tier on decline). Target a stable refresh-aligned experience; treat 60 fps as a practical baseline on capable devices, establish an explicit low-tier floor, and degrade visual cost before interaction or content breaks.
 
 ## Accessibility & UX for non-standard interfaces
 
 - **Onboard interaction.** Non-standard UX means users don't know what to do. Use tooltips-as-achievements ("Scroll to fly", "Drag to browse") that complete on the action. Persist to localStorage.
 - **`prefers-reduced-motion` is a parallel design, not a disable flag.** Ship a real degraded version that conveys the same intent without vestibular cost (`gsap.matchMedia`).
-- **Keep an accessible DOM.** The canvas is decorative; provide semantic headings/landmarks + an SEO/screen-reader fallback tree (invisible but crawlable). Add keyboard navigation for camera/room changes and preserve focus on route/scene transitions.
+- **Keep an accessible DOM contract.** On content sites, keep Canvas decorative and put meaning in semantic headings/landmarks plus an SEO/screen-reader tree. For tools and games, expose equivalent DOM controls, status, instructions, and recovery paths for critical actions. Preserve focus on route/scene transitions.
 - **Bridge states cleanly.** DOM buttons, nav, forms, captions, charts, and modals must own semantic state (`disabled`, `aria-expanded`, `aria-current`, validation messages). The WebGL scene may mirror that state visually, but it should not be the only source of meaning.
 - **Sound is opt-in.** Never autoplay. But *have* sound — ambient per scene turns "a page with graphics" into "a place". Muffle (lowpass) rather than cut when entering sub-views.
 
 ## Pre-delivery checks
 
+- Run the project audit before manual QA:
+  ```bash
+  node "${CODEX_HOME:-$HOME/.codex}/skills/3d-web-design/scripts/audit-three-project.mjs" .
+  ```
 - Declare the design read and dial values; for redesigns, confirm preserve/overhaul/greenfield mode.
+- Confirm exactly one system of record owns each content, domain, or gameplay state; verify Canvas/DOM, mesh/body, and HUD/simulation synchronization.
 - Confirm the hero fits the first viewport, nav is one line on desktop, CTAs do not wrap, and trust/logo content sits below the hero.
 - Count obvious template tells: repeated eyebrows, repeated split sections, three equal feature cards, duplicate CTA intent, fake product previews, scroll cues, decorative status dots, fake version labels, and generic filler names/copy.
 - Test at 375px, tablet, desktop, and mobile landscape; confirm no horizontal scroll or clipped fixed UI.
@@ -192,10 +262,14 @@ Verify with a real FPS monitor (drei `PerformanceMonitor` can auto-downgrade tie
 - Verify contrast in light and dark modes, touch targets ≥44×44px, press/loading/error states, and no hover-only paths.
 - Verify CLS-safe media dimensions, font loading, asset compression, shader warm-up strategy, and FPS target on representative hardware.
 - Verify real visual assets are present and appropriate: generated/real media, rendered 3D, real screenshots, or live component previews.
+- Audit every shipped GLB/glTF; confirm decoder/transcoder paths, source manifest, closest-shot quality, texture color spaces, and intentional fallback behavior.
+- For websites, verify real URLs, refresh/back/forward, no duplicate renderer/listeners, DOM-first LCP, and field Core Web Vitals targets (LCP ≤2.5s, INP ≤200ms, CLS ≤0.1 at p75).
+- For games, verify fixed-step behavior under frame drops, pause/resume, restart, state transitions, collision determinism, object-pool reuse, input remapping, and HUD/audio synchronization.
+- For tools/configurators, verify undo/recovery, invalid state handling, persistence/share/export, keyboard alternatives, and deterministic reload of saved state.
 
 ## Anti-patterns & hard-won lessons
 
-- Polishing visuals on a broken camera/scroll foundation (violates the one rule).
+- Polishing visuals on a broken camera/scroll/simulation foundation (violates the governing workflow).
 - Treating the canvas as the interface and leaving DOM/a11y/SEO as an afterthought.
 - Hiding primary navigation or CTAs behind hover, mystery gestures, or unlabeled icons.
 - Jumping to centered hero, AI-purple glow, three equal cards, glass everywhere, Inter everywhere, or fake dashboard divs before reading the brief.
@@ -203,6 +277,9 @@ Verify with a real FPS monitor (drei `PerformanceMonitor` can auto-downgrade tie
 - Redesigning by changing IA, routes, copy voice, logo, form fields, legal text, analytics hooks, or SEO-critical structure without explicit approval.
 - Real-time shadows on flat/stylized geometry (huge cost, zero visual gain).
 - Blindly adopting KTX2 — it degraded hand-drawn textures and slowed load in a real case; WebP already hit 60/144fps.
+- Choosing assets in isolation, producing a scene of unrelated models with no shared subject, scale, era, or material language.
+- Silently shipping a cylinder/sphere fallback after a compressed GLB fails to decode.
+- Making every material slightly metallic or equally glossy, which turns detailed assets into plastic toys.
 - Remounting a WebGL context per gallery item → GPU memory climb → stutter. Mount once, swap textures.
 - Driving 60Hz scroll updates through React state.
 - Animating layout properties for UI chrome; use transform/opacity and keep interactions interruptible.
@@ -215,6 +292,14 @@ Verify with a real FPS monitor (drei `PerformanceMonitor` can auto-downgrade tie
 
 - `references/technique-catalog.md` — full technique catalog (§A–§L core patterns, §M physics & interactive UI, §N extended index from a deep-study pass over the whole Three.js tag) with code snippets and source links. Read the relevant section when implementing architecture, scroll/input, cameras, instancing, shaders, post-processing, transitions, assets, performance, sound, content tooling, accessibility, physics-driven UI, or the extended technique index.
 - `references/frontend-taste-and-ux.md` — detailed frontend taste and UX catalog distilled from UI/UX and anti-slop frontend guidance. Read it when the task involves design reads, dial selection, design systems, hero quality, DOM/WebGL UI contracts, accessibility, responsive behavior, motion orchestration, visual assets, content/CTA quality, forms/data feedback, redesigns, or anti-template preflight.
+- `references/3d-asset-pipeline.md` — production asset workflow for sourcing and licensing, GLB/glTF inspection, decoder contracts, visual audition, geometry/texture preparation, PBR material integration, performance budgets, fallbacks, and browser QA. Read it whenever external 3D assets enter or fail in a project.
+- `references/experience-architecture.md` — system-of-record rules, website/tool/game architectures, simulation and collision selection, fixed-step loops, state ownership, folder structures, lifecycle, and mode-specific acceptance gates. Read it for state-heavy builds and architecture reviews.
+- `references/open-source-casebook.md` — verified high-signal repositories, license boundaries, architecture lessons, and a safe extraction workflow. Read it before searching for, comparing, cloning, or adapting an open-source Three.js project.
+
+## Bundled audits
+
+- `scripts/audit-gltf.mjs` — inspect GLB/glTF structure, extensions, decoder contracts, complexity, and external dependencies before integration.
+- `scripts/audit-three-project.mjs` — inventory a Three.js project, detect its stack and assets, check common production signals, compare glTF decoder requirements with source configuration, and emit actionable warnings. Treat its output as evidence for manual review, not a substitute for browser QA.
 
 ## Additional resources
 

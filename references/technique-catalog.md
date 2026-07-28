@@ -1,8 +1,25 @@
 # 3D Web Design — Technique Catalog
 
-Code-level patterns behind [SKILL.md](SKILL.md). Snippets are minimal; adapt to your stack. Each notes its source.
+Code-level patterns behind [SKILL.md](../SKILL.md). Snippets are minimal; adapt to your stack. Each notes its source. Treat case studies as pattern evidence and verify current APIs against official Three.js/R3F/framework documentation.
 
 Sources: `portfolio-itom` (hand-drawn infinite corridor), and Codrops case studies — Sketching the Impossible (ITom), GSAP Shader Wipes (Guignand), Blender Camera Path (Hedde), Susurrus (Wei), False Earth (Hung), Shopify Everywhere (Thelander), Shader.se (Kantedal), Depth Gallery (Kane), Wave Cube Grid (Franky Hung), Webflow Transitions (Ruffini), Dithering Cubes (Pramudita), Podium, [The Journey of Creating a 3D Portfolio (Merouane Bali)](https://tympanus.net/codrops/2025/01/21/the-journey-of-creating-a-3d-portfolio/).
+
+## Contents
+
+- A. Architecture and structure
+- B. Input and scroll
+- C. Camera systems
+- D. Instancing and GPU-driven rendering
+- E. Shaders and materials
+- F. Post-processing
+- G. Transitions and reveals
+- H. Textures and assets
+- I. Performance and tiering
+- J. Sound
+- K. Content, data, and tooling
+- L. Accessibility and UX
+- M. Physics and interactive UI
+- N. Extended technique index
 
 ---
 
